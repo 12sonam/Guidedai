@@ -34,8 +34,8 @@
 }
 
 .sticky__header{
-    width: 100px;
-    height: 80px;
+    width: 100%;
+    height: 100px;
     line-height: 80px;
     background: #fff;
     position: sticky;
