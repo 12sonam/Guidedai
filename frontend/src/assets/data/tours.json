@@ -1,0 +1,122 @@
+[
+  {
+    "title": "Annapurna Base Camp",
+    "city": "Pokhara",
+    "address": "Somewhere in Annapurna Region",
+    "distance": 200,
+    "price": 120,
+    "maxGroupSize": 10,
+    "desc": "Explore the breathtaking Annapurna Base Camp with stunning mountain views.",
+    "reviews": [],
+    "photo": "/tour-images/tour-img01.jpg",
+    "featured": true
+  },
+  {
+    "title": "Everest Base Camp",
+    "city": "Solukhumbu",
+    "address": "Somewhere in Everest Region",
+    "distance": 300,
+    "price": 150,
+    "maxGroupSize": 8,
+    "desc": "A challenging trek to the base of the world's highest peak.",
+    "reviews": [],
+    "photo": "/tour-images/tour-img02.jpg",
+    "featured": true
+  },
+  {
+    "title": "Upper Dolpa Trek",
+    "city": "Dolpa",
+    "address": "Somewhere in Dolpa Region",
+    "distance": 400,
+    "price": 180,
+    "maxGroupSize": 8,
+    "desc": "Experience the remote beauty and unique culture of Upper Dolpa.",
+    "reviews": [],
+    "photo": "/tour-images/tour-img03.jpg",
+    "featured": true
+  },
+  {
+    "title": "Rara Lake Trek",
+    "city": "Mugu",
+    "address": "Somewhere in Rara National Park",
+    "distance": 500,
+    "price": 130,
+    "maxGroupSize": 8,
+    "desc": "Enjoy the serene beauty of Rara, Nepal's largest lake.",
+    "reviews": [],
+    "photo": "/tour-images/tour-img04.jpg",
+    "featured": true
+  },
+  {
+    "title": "Langtang Valley Trek",
+    "city": "Rasuwa",
+    "address": "Somewhere in Langtang National Park",
+    "distance": 250,
+    "price": 110,
+    "maxGroupSize": 8,
+    "desc": "Discover the beautiful Langtang Valley with its rich culture and stunning views.",
+    "reviews": [],
+    "photo": "/tour-images/tour-img05.jpg",
+    "featured": true
+  },
+  {
+    "title": "Ghorepani Poon Hill Trek",
+    "city": "Myagdi",
+    "address": "Somewhere in Annapurna Region",
+    "distance": 150,
+    "price": 90,
+    "maxGroupSize": 8,
+    "desc": "Short and scenic trek with amazing sunrise views over the Himalayas.",
+    "reviews": [],
+    "photo": "/tour-images/tour-img06.jpg",
+    "featured": true
+  },
+  {
+    "title": "Manaslu Circuit Trek",
+    "city": "Gorkha",
+    "address": "Somewhere in Manaslu Region",
+    "distance": 450,
+    "price": 170,
+    "maxGroupSize": 8,
+    "desc": "Trek around the majestic Manaslu peak and experience rich Buddhist culture.",
+    "reviews": [],
+    "photo": "/tour-images/tour-img07.jpg",
+    "featured": true
+  },
+  {
+    "title": "Mardi Himal Trek",
+    "city": "Kaski",
+    "address": "Somewhere in Annapurna Region",
+    "distance": 300,
+    "price": 100,
+    "maxGroupSize": 8,
+    "desc": "An off-the-beaten-path trek with spectacular views of Machhapuchhre.",
+    "reviews": [],
+    "photo": "/tour-images/tour-img08.jpg",
+    "featured": true
+  },
+  {
+    "title": "Kanchenjunga Base Camp",
+    "city": "Taplejung",
+    "address": "Somewhere in Kanchenjunga Region",
+    "distance": 600,
+    "price": 200,
+    "maxGroupSize": 5,
+    "desc": "A remote trek to the base of the third-highest peak in the world.",
+    "reviews": [],
+    "photo": "/tour-images/tour-img08.jpg",
+    "featured": false
+  },
+  {
+    "title": "Pikey Peak Trek",
+    "city": "Solukhumbu",
+    "address": "Somewhere in Solukhumbu Region",
+    "distance": 400,
+    "price": 95,
+    "maxGroupSize": 8,
+    "desc": "A short trek with panoramic views of the Everest range.",
+    "reviews": [],
+    "photo": "/tour-images/tour-img09.jpg",
+    "featured": false
+  }
+]
