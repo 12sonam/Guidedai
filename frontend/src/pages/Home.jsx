@@ -33,7 +33,7 @@ const Home = () => {
                     </div>
                     <h1>Travelling opens the door to creating <span className="highlight"> memories</span></h1>
                     <p>
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae maxime alias consequatur eius hic soluta odio inventore, aut nostrum consectetur iure! Esse unde voluptas illum quasi error quis, et officia.
+                    Whether you're exploring hidden gems or popular landmarks, we provide reliable recommendations and hassle-free booking options. Start your journey today with Guidedai – where adventure meets convenience!
                     </p>
                     </div>
                 </Col>
@@ -77,7 +77,7 @@ const Home = () => {
             <Row>
                 <Col lg='12' className="mb-5">
                     <Subtitle subtitle={'Expolore'}/>
-                    <h2 className="featured__tour-title">Our featured tours</h2>
+                    <h2 className="featured__tour-title">Recommendation</h2>
                 </Col>
                 <FeaturedTourList />
             </Row>
@@ -95,9 +95,9 @@ const Home = () => {
 
                     <h2>With out all experience <br />we will server you </h2>
                     <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    we take pride in serving adventurers across Nepal. Your journey, our commitment!
                         <br />
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    We have proudly served thousands of travelers, ensuring seamless and memorable journeys across Nepal.
                     </p>
                 </div>
 
