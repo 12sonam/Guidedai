@@ -9,9 +9,16 @@ import Register from "../pages/Register";
 import SearchResultList from "../pages/SearchResultList";
 import ThankYou from "../pages/ThankYou";
 
+// // Import Role-Based Pages
+// import AdminDashboard from "../pages/AdminDashboard";
+// import GuideDashboard from "../pages/GuideDashboard";
+// import TravelerDashboard from "../pages/TravelerDashboard";
+// import ProtectedRoute from "./ProtectedRoute";  // To secure routes
+
 const Routers = () => {
     return (
         <Routes>
+            {/* Public Routes */}
             <Route path="/" element={<Navigate to="/home" />} />
             <Route path="/home" element={<Home />} />
             <Route path="/tours" element={<Tours />} />
@@ -20,6 +27,11 @@ const Routers = () => {
             <Route path="/register" element={<Register />} />
             <Route path="/thank-you" element={<ThankYou />} />
             <Route path="/tours/search" element={<SearchResultList />} />
+
+            {/* Role-Based Routes (Protected) */}
+            {/* <Route path="/admin-dashboard" element={<ProtectedRoute role="Admin"><AdminDashboard /></ProtectedRoute>} />
+            <Route path="/guide-dashboard" element={<ProtectedRoute role="Guide"><GuideDashboard /></ProtectedRoute>} />
+            <Route path="/traveler-dashboard" element={<ProtectedRoute role="Traveler"><TravelerDashboard /></ProtectedRoute>} /> */}
         </Routes>
     );
 };
