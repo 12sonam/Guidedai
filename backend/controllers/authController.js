@@ -44,11 +44,55 @@ export const register = async (req, res) => {
 };
 
 //user login
-export const login = async(req, res) => {
+export const login = async (req, res) => {
+    const { email, password, role } = req.body; // Extract email, password, and role from the request body
 
     try {
-        
+        // Find the user by email
+        const user = await User.findOne({ email });
+
+        // If the user doesn't exist
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+        // If the role doesn't match
+        if (user.role !== role) {
+            return res.status(403).json({ success: false, message: `Access denied for role: ${role}` });
+        }
+
+        // Compare the entered password with the hashed password
+        const isPasswordCorrect = bcrypt.compareSync(password, user.password);
+
+        // If the password is incorrect
+        if (!isPasswordCorrect) {
+            return res.status(401).json({ success: false, message: 'Incorrect email or password' });
+        }
+
+        // Destructure sensitive data and exclude it from the response
+        const { password: userPassword, ...rest } = user._doc;
+
+        // Create JWT token
+        const token = jwt.sign(
+            { id: user._id, role: user.role },
+            process.env.JWT_SECRET_KEY,
+            { expiresIn: '15d' }
+        );
+
+        // Set the token in browser cookies and send the response
+        res.cookie('accessToken', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+            sameSite: 'strict',
+            maxAge: 15 * 24 * 60 * 60 * 1000 // 15 days
+        }).status(200).json({
+            success: true,
+            message: 'Successfully logged in',
+            data: { ...rest }
+        });
+
     } catch (err) {
-        
+        console.error(err); // Log the error for debugging
+        res.status(500).json({ success: false, message: 'Failed to login' });
     }
-}
+};
