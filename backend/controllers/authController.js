@@ -62,10 +62,10 @@ export const login = async (req, res) => {
         }
 
         // Compare the entered password with the hashed password
-        const isPasswordCorrect = bcrypt.compareSync(password, user.password);
+        const checkPasswordCorrect = await bcrypt.compare(req.body.password, user.password);
 
         // If the password is incorrect
-        if (!isPasswordCorrect) {
+        if (!checkPasswordCorrect) {
             return res.status(401).json({ success: false, message: 'Incorrect email or password' });
         }
 
@@ -82,14 +82,8 @@ export const login = async (req, res) => {
         // Set the token in browser cookies and send the response
         res.cookie('accessToken', token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
-            sameSite: 'strict',
-            maxAge: 15 * 24 * 60 * 60 * 1000 // 15 days
-        }).status(200).json({
-            success: true,
-            message: 'Successfully logged in',
-            data: { ...rest }
-        });
+            expires:token.expiresIn
+        }).status(200).json({token, success:true, message:'Successfully Login', data: { ...rest }, role,});
 
     } catch (err) {
         console.error(err); // Log the error for debugging
