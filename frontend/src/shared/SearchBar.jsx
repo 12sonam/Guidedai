@@ -32,7 +32,7 @@ const SearchBar = () => {
                 <FormGroup className="d-flex gap-3 form__group form__group-fast">
                     <span><i class="ri-money-dollar-box-line"></i></span>
                     <div>
-                        <h6>Budget</h6>
+                        <h6>Price</h6>
                         <input type= "number" placeholder="Budget" ref={budgetRef}/>
                     </div>
                 </FormGroup>

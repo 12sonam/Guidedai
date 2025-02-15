@@ -12,7 +12,7 @@ import Newsletter from "../shared/Newsletter"
 const Tourdetails = () => {
     const {id} = useParams()
     const reviewMsgRef = useRef('')
-    const [tourRating, setTourRating]=useState(null)
+    const [/*tourRating*/, setTourRating]=useState(null)
 
     //this is static data later for later calling API and load our data from database
     const tour = tourData.find(tour=> tour.id === id );
@@ -28,7 +28,7 @@ const Tourdetails = () => {
     // submit request to the server
     const submitHandler = e=> {
         e.preventDefault();
-        const reviewText = reviewMsgRef.current.value;
+        // const reviewText = reviewMsgRef.current.value;
 
         //call out api 
     }
@@ -52,7 +52,7 @@ const Tourdetails = () => {
                             {totalRating === 0 ? (
                                 'Not rated' 
                             ) : (
-                            <span>({reviews ?.length})</span>
+                            <span>({reviews?.length})</span>
                             )}
                             </span>
 
@@ -73,7 +73,7 @@ const Tourdetails = () => {
 
                         {/* ======= tour reviews section ========== */}
                         <div className="tour__reviews mt-4">
-                            <h4>Reviews ({reviews ?.length} reviews)</h4>
+                            <h4>Reviews ({reviews?.length} reviews)</h4>
 
                             <Form onSubmit={submitHandler}>
                                 <div className="d-flex align-items-center gap-3 rating__group">
@@ -93,7 +93,7 @@ const Tourdetails = () => {
                             </Form>
 
                             <ListGroup className="user__reviews">
-                                {reviews ?.map(review => (
+                                {reviews?.map(review => (
                                         <div className="review__item">
                                             <img src={avatar} alt="" />
 

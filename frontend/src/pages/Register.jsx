@@ -33,7 +33,7 @@ const Register = () => {
             } else if (credentials.role === "Guide") {
                 navigate("/guide-dashboard");
             } else {
-                navigate("/traveler-dashboard");
+                navigate("/home");
             }
         } else {
             alert("Please enter valid credentials!");
