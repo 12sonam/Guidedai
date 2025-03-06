@@ -70,7 +70,7 @@ const Register = () => {
                                             <option value="Admin">Admin</option>
                                         </Input>
                                     </FormGroup>
-                                    <Button className="btn secondary__btn auth__btn" type="submit">
+                                    <Button className="btn secondary__btn auth__btn" type="submit" onClick={() => window.location.href = "/login"}>
                                         Create Account
                                     </Button>
                                 </Form>

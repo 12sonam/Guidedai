@@ -1,23 +1,34 @@
 import React, {useRef} from "react";
-import './search-bar.css'
-import { Col, Form, FormGroup} from "reactstrap"
+import './search-bar.css';
+import { Col, Form, FormGroup} from "reactstrap";
+import { BASE_URL } from "../utils/config";
+import { useNavigate } from "react-router-dom";
 
 const SearchBar = () => {
 
-    const locationRef = useRef(' ')
-    const budgetRef = useRef(0)
-    const maxGropuSizeRef = useRef(0)
+    const titleRef = useRef(' ');
+    const priceRef = useRef(0);
+    const maxGropuSizeRef = useRef(0);
+    const navigate = useNavigate()
 
-    const searchHandler = () => {
+    const searchHandler = async() => {
 
-        const location = locationRef.current.value
-        const budget = budgetRef.current.value
-        const maxGropuSize = maxGropuSizeRef.current.value
+        const title = titleRef.current.value
+        const price = priceRef.current.value
+        const maxGroupSize = maxGropuSizeRef.current.value
 
-        if(location==='' || budget ==='' || maxGropuSize===''){
+        if(title ==='' || price ==='' || maxGroupSize===''){
             return alert('All fields are required!');
         }
-    }
+
+        const res = await fetch(`${BASE_URL}/tours/search/getTourBySearch?title=${title}&price=${price}&maxGroupSize=${maxGroupSize}`);
+
+        if(!res.ok) alert('Something went wrong');
+
+        const result = await res.json ();
+
+        navigate(`/tours/search?city=${title}&price=${price}&maxGroupSize=${maxGroupSize}`, {state: result.data});
+    };
 
     return <Col lg='12'>
         <div className="search__bar">
@@ -25,15 +36,15 @@ const SearchBar = () => {
                 <FormGroup className="d-flex gap-3 form__group form__group-fast">
                     <span><i class="ri-map-pin-line"></i></span>
                     <div>
-                        <h6>Location</h6>
-                        <input type= "text" placeholder="Where are you going?" ref={locationRef}/>
+                        <h6>title</h6>
+                        <input type= "text" placeholder="Where are you going?" ref={titleRef}/>
                     </div>
                 </FormGroup>
                 <FormGroup className="d-flex gap-3 form__group form__group-fast">
                     <span><i class="ri-money-dollar-box-line"></i></span>
                     <div>
                         <h6>Price</h6>
-                        <input type= "number" placeholder="Budget" ref={budgetRef}/>
+                        <input type= "number" placeholder="price" ref={priceRef}/>
                     </div>
                 </FormGroup>
                 <FormGroup className="d-flex gap-3 form__group form_group-last">

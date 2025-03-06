@@ -29,9 +29,9 @@ const Login = () => {
         // Simulating authentication (replace with actual backend authentication)
         if (credentials.email && credentials.password) {
             if (credentials.role === "Admin") {
-                navigate("/admin-dashboard");
+                navigate("/Admin-dashboard");
             } else if (credentials.role === "Guide") {
-                navigate("/guide-dashboard");
+                navigate("/Guide-dashboard");
             } else {
                 navigate("/home");
             }
