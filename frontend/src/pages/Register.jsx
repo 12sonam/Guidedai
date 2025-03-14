@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext} from "react";
 import { Container, Row, Col, Form, FormGroup, Button, Label, Input } from "reactstrap";
 import { Link, useNavigate } from "react-router-dom";
 import '../styles/login.css';
@@ -6,14 +6,19 @@ import '../styles/login.css';
 import registerImg from '../assets/images/register.png';
 import userIcon from '../assets/images/user.png';
 
+import { AuthContext } from "../context/AuthContext";
+import { BASE_URL } from "../utils/config";
+
 const Register = () => {
-    const navigate = useNavigate();
 
     const [credentials, setCredentials] = useState({
         email: undefined,
         password: undefined,
         role: "Traveler", // Default role
     });
+
+    const {dispatch} = useContext(AuthContext) 
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setCredentials(prev => ({ ...prev, [e.target.id]: e.target.value }));
@@ -23,15 +28,34 @@ const Register = () => {
         setCredentials(prev => ({ ...prev, role: e.target.value }));
     };
 
-    const handleClick = (e) => {
+    const handleClick = async (e) => {
         e.preventDefault();
+
+        try {
+            const res = await fetch(`${BASE_URL}/auth/register`, {
+                method: 'post',
+                headers: {
+                    'content-type': 'application/json',
+                },
+                body: JSON.stringify(credentials),
+            });
+            const result = await res.json()
+
+            if(!res.ok) alert(result.meassage)
+
+            dispatch({type:'REGISTER_SUCCESS'})
+            navigate('/login')
+            
+        } catch (err) {
+            alert(err.message);
+        }
         
         // Simulating authentication (replace with actual backend authentication)
         if (credentials.email && credentials.password) {
             if (credentials.role === "Admin") {
-                navigate("/admin-dashboard");
+                navigate("/Admin-dashboard");
             } else if (credentials.role === "Guide") {
-                navigate("/guide-dashboard");
+                navigate("/Guide-dashboard");
             } else {
                 navigate("/home");
             }
@@ -56,6 +80,9 @@ const Register = () => {
                                 <h2>Login</h2>
 
                                 <Form onSubmit={handleClick}>
+                                <FormGroup>
+                                        <input type="username" placeholder="Username" id="username" required onChange={handleChange} />
+                                    </FormGroup>
                                     <FormGroup>
                                         <input type="email" placeholder="Email" id="email" required onChange={handleChange} />
                                     </FormGroup>

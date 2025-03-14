@@ -36,7 +36,7 @@ const SearchBar = () => {
                 <FormGroup className="d-flex gap-3 form__group form__group-fast">
                     <span><i class="ri-map-pin-line"></i></span>
                     <div>
-                        <h6>title</h6>
+                        <h6>Location</h6>
                         <input type= "text" placeholder="Where are you going?" ref={titleRef}/>
                     </div>
                 </FormGroup>
