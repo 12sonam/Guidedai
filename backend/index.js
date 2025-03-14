@@ -13,10 +13,18 @@ import bookingRoute from './routes/bookings.js';
 dotenv.config();
 const app = express();
 const port = process.env.PORT || 8000;
+// const corsOptions = {
+//     origin:true,
+//     credentials:true
+// }
+
+// Proper CORS Configuration
 const corsOptions = {
-    origin:true,
-    credential:true
-}
+    origin: "http://localhost:3000", // Replace wildcard (*) with frontend URL
+    credentials: true, // Allow cookies and authentication headers
+    methods: "GET, POST, PUT, DELETE",
+    allowedHeaders: "Content-Type, Authorization",
+};
 
 // database connection
 mongoose.set('strictQuery', false)
@@ -35,6 +43,7 @@ const connect = async()=>{
 
 // middleware 
 app.use (express.json());
+// app.use(cors());
 app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use('/api/v2/auth', authRoute);
@@ -47,6 +56,3 @@ app.listen(port, ()=>{
     connect();  
     console.log('server listening on port', port);
 });
-
-
- 
