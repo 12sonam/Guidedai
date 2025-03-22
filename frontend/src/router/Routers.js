@@ -9,11 +9,11 @@ import Register from "../pages/Register";
 import SearchResultList from "../pages/SearchResultList";
 import ThankYou from "../pages/ThankYou";
 
-// // Import Role-Based Pages
-// import AdminDashboard from "../pages/AdminDashboard";
-// import GuideDashboard from "../pages/GuideDashboard";
-// import TravelerDashboard from "../pages/TravelerDashboard";
-// import ProtectedRoute from "./ProtectedRoute";  // To secure routes
+// Import Role-Based Pages
+import AdminDashboard from "../pages/Admin-dashboard";
+import GuideDashboard from "../pages/Guide-dashboard";
+import TravelerDashboard from "../pages/Home";
+import ProtectedRoute from "./ProtectRoute";  // To secure routes
 
 const Routers = () => {
     return (
@@ -29,9 +29,30 @@ const Routers = () => {
             <Route path="/tours/search" element={<SearchResultList />} />
 
             {/* Role-Based Routes (Protected) */}
-            {/* <Route path="/admin-dashboard" element={<ProtectedRoute role="Admin"><AdminDashboard /></ProtectedRoute>} />
-            <Route path="/guide-dashboard" element={<ProtectedRoute role="Guide"><GuideDashboard /></ProtectedRoute>} />
-            <Route path="/traveler-dashboard" element={<ProtectedRoute role="Traveler"><TravelerDashboard /></ProtectedRoute>} /> */}
+            <Route
+                path="/Admin-dashboard"
+                element={
+                    <ProtectedRoute role="Admin">
+                        <AdminDashboard />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/Guide-dashboard"
+                element={
+                    <ProtectedRoute role="Guide">
+                        <GuideDashboard />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/Home"
+                element={
+                    <ProtectedRoute role="Traveler">
+                        <TravelerDashboard />
+                    </ProtectedRoute>
+                }
+            />
         </Routes>
     );
 };

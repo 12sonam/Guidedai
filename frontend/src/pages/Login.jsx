@@ -49,24 +49,32 @@ const Login = () => {
             console.log(result.data);
 
             dispatch({type:'LOGIN_SUCCESS', payload:result.data})
-            navigate('/');
+
+            // Redirect based on role
+        if (result.role === "Admin") {
+            navigate("/Admin-dashboard");
+        } else if (result.role === "Guide") {
+            navigate("/Guide-dashboard");
+        } else {
+            navigate("/home");
+        }
 
         } catch (err) {
             dispatch({type:'LOGIN_FAILURE', payload:err.message})
         }
         
-        // Simulating authentication (replace with actual backend authentication)
-        if (credentials.email && credentials.password) {
-            if (credentials.role === "Admin") {
-                navigate("/Admin-dashboard");
-            } else if (credentials.role === "Guide") {
-                navigate("/Guide-dashboard");
-            } else {
-                navigate("/home");
-            }
-        } else {
-            alert("Please enter valid credentials!");
-        }
+        // // Simulating authentication (replace with actual backend authentication)
+        // if (credentials.email && credentials.password) {
+        //     if (credentials.role === "Admin") {
+        //         navigate("/Admin-dashboard");
+        //     } else if (credentials.role === "Guide") {
+        //         navigate("/Guide-dashboard");
+        //     } else {
+        //         navigate("/home");
+        //     }
+        // } else {
+        //     alert("Please enter valid credentials!");
+        // }
     };
 
     return (
