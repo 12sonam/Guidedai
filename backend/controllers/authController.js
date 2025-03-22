@@ -83,7 +83,7 @@ export const login = async (req, res) => {
         res.cookie('accessToken', token, {
             httpOnly: true,
             expires:token.expiresIn
-        }).status(200).json({token, success:true, message:'Successfully Login', data: { ...rest }, role,});
+        }).status(200).json({token, success:true, message:'Successfully Login', data: { ...rest }, role: user.role,});
 
     } catch (err) {
         console.error(err); // Log the error for debugging
