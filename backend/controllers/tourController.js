@@ -1,36 +1,118 @@
 import Tour from '../models/Tour.js'
+import mongoose from 'mongoose';
 
 //create new tour 
-export const createTour = async (req,res) => {
-    const newTour = new Tour(req.body);
-
+export const createTour = async (req, res) => {
     try {
+        const { title, city, address, distance, photo, desc, price, maxGroupSize, featured } = req.body;
+        
+        // Validate required fields
+        if (!title || !city || !address || !distance || !photo || !desc || !price || !maxGroupSize) {
+            return res.status(400).json({
+                success: false,
+                message: "All fields are required"
+            });
+        }
+
+        const newTour = new Tour({
+            title,
+            city,
+            address,
+            distance,
+            photo,
+            desc,
+            price,
+            maxGroupSize,
+            featured: featured || false
+        });
+
         const savedTour = await newTour.save();
 
-        res.status(200).json({success:true, message:"Successfully created", data:savedTour});
-
+        res.status(201).json({
+            success: true,
+            message: "Tour created successfully",
+            data: savedTour
+        });
     } catch (err) {
-        res.status(500).json({success:false, message:"Failed to create. Try again"});
+        console.error(err);
+        res.status(500).json({
+            success: false,
+            message: "Failed to create tour",
+            error: err.message
+        });
     }
 };
+
+// export const createTour = async (req,res) => {
+//     const newTour = new Tour(req.body);
+
+//     try {
+//         const savedTour = await newTour.save();
+
+//         res.status(200).json({success:true, message:"Successfully created", data:savedTour});
+
+//     } catch (err) {
+//         res.status(500).json({success:false, message:"Failed to create. Try again"});
+//     }
+// };
 
 // update tour
-export const updateTour = async (req,res) => {
 
-    const id = req.params.id
-
+export const updateTour = async (req, res) => {
+    const { id } = req.params;
+    
     try {
+        // Validate ID
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid tour ID"
+            });
+        }
 
-        const updatedTour = await Tour.findByIdAndUpdate(id, {
-            $set: req.body
-        }, {new:true});
+        const updatedTour = await Tour.findByIdAndUpdate(
+            id,
+            { $set: req.body },
+            { new: true, runValidators: true }
+        );
 
-        res.status(200).json({success:true, message:"Successfully updated", data: updatedTour});
-        
+        if (!updatedTour) {
+            return res.status(404).json({
+                success: false,
+                message: "Tour not found"
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Tour updated successfully",
+            data: updatedTour
+        });
     } catch (err) {
-        res.status(500).json({success:false, message:"Failed to update",});
+        console.error(err);
+        res.status(500).json({
+            success: false,
+            message: "Failed to update tour",
+            error: err.message
+        });
     }
 };
+// export const updateTour = async (req,res) => {
+
+//     const id = req.params.id
+
+//     try {
+
+//         const updatedTour = await Tour.findByIdAndUpdate(id, {
+//             $set: req.body
+//         }, {new:true});
+
+//         res.status(200).json({success:true, message:"Successfully updated", data: updatedTour});
+        
+//     } catch (err) {
+//         res.status(500).json({success:false, message:"Failed to update",});
+//     }
+// };
 
 // delete tour
 export const deleteTour = async (req, res) => {
