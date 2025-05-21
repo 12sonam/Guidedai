@@ -1,10 +1,303 @@
-
-.thank__you span i {
-    font-size: 4rem;
-    color: green;
+/* Section Styling */
+.thank-you-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+  overflow: hidden;
 }
 
-.thank__you h1{
-    font-size: 3.6rem;
-    font-family: var(--subtitle-font-name);
+/* Floating Shapes Background */
+.floating-shapes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.shape {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  animation: float 15s infinite ease-in-out;
+}
+
+.shape1 {
+  width: 150px;
+  height: 150px;
+  top: 10%;
+  left: 15%;
+  animation-delay: 0s;
+}
+
+.shape2 {
+  width: 100px;
+  height: 100px;
+  top: 60%;
+  left: 70%;
+  animation-delay: 5s;
+}
+
+.shape3 {
+  width: 200px;
+  height: 200px;
+  top: 80%;
+  left: 30%;
+  animation-delay: 10s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateY(-50px) scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+/* Card Styling (Neumorphism) */
+.thank-you-card {
+  background: #e0e0e0;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.1), -10px -10px 20px rgba(255, 255, 255, 0.7);
+  max-width: 600px;
+  margin: 0 auto;
+  z-index: 2;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.thank-you-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 15px 15px 30px rgba(0, 0, 0, 0.15), -15px -15px 30px rgba(255, 255, 255, 0.9);
+}
+
+/* Success Icon */
+.success-icon {
+  display: inline-block;
+  font-size: 5rem;
+  color: #28a745;
+  margin-bottom: 20px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+/* Typography */
+.thank-you-title {
+  font-size: 2.8rem;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  margin-bottom: 10px;
+  font-weight: 700;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.thank-you-card h3 {
+  font-size: 1.5rem;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.thank-you-card p {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+/* Booking Details (Timeline) */
+.booking-details {
+  border-top: 1px solid #ccc;
+  padding-top: 20px;
+  margin-top: 20px;
+}
+
+.booking-details h4 {
+  font-size: 1.4rem;
+  color: #333;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.booking-timeline {
+  position: relative;
+  padding-left: 40px;
+}
+
+.booking-timeline::before {
+  content: '';
+  position: absolute;
+  left: 15px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, #28a745, #007bff);
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: slideIn 0.5s forwards;
+}
+
+.timeline-item:nth-child(1) { animation-delay: 0.1s; }
+.timeline-item:nth-child(2) { animation-delay: 0.3s; }
+.timeline-item:nth-child(3) { animation-delay: 0.5s; }
+.timeline-item:nth-child(4) { animation-delay: 0.7s; }
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.timeline-icon {
+  position: absolute;
+  left: -35px;
+  top: 5px;
+  font-size: 1.5rem;
+  background: #e0e0e0;
+  border-radius: 50%;
+  padding: 8px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1), -5px -5px 10px rgba(255, 255, 255, 0.7);
+}
+
+.timeline-content {
+  background: #f5f5f5;
+  padding: 10px 15px;
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+.timeline-content:hover {
+  background: #ececec;
+}
+
+.timeline-content p {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  margin-bottom: 5px;
+}
+
+.timeline-content p strong {
+  color: #333;
+  font-weight: 600;
+}
+
+/* Payment Status */
+.payment-success {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.payment-pending {
+  color: #ff9800;
+  font-weight: bold;
+}
+
+.success-message {
+  color: #28a745;
+  font-style: italic;
+}
+
+.pending-message {
+  color: #ff9800;
+  font-style: italic;
+}
+
+/* Welcome Message */
+.welcome-message {
+  font-size: 1.2rem;
+  color: #333;
+  margin-top: 20px;
+  font-style: italic;
+}
+
+/* Button Styling with Ripple Effect */
+.thank-you-card .btn {
+  position: relative;
+  background: linear-gradient(45deg, #f7ca18, #f39c12);
+  border: none;
+  padding: 12px 30px;
+  font-size: 1.1rem;
+  border-radius: 25px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.thank-you-card .btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.thank-you-card .btn a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.ripple {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: scale(0);
+  animation: ripple 0.6s linear;
+  pointer-events: none;
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .thank-you-card {
+    padding: 20px;
+    max-width: 90%;
+  }
+
+  .thank-you-title {
+    font-size: 2.2rem;
+  }
+
+  .thank-you-card h3 {
+    font-size: 1.3rem;
+  }
+
+  .booking-details h4 {
+    font-size: 1.2rem;
+  }
+
+  .timeline-content p {
+    font-size: 0.9rem;
+  }
+
+  .thank-you-card .btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+  }
 }

@@ -1,0 +1,93 @@
+.payment-success-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f5f5;
+  }
+  
+  .payment-success-card {
+    background: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 0 auto;
+    transition: transform 0.3s ease;
+  }
+  
+  .payment-success-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .payment-success-card span i.success-icon {
+    font-size: 4rem;
+    color: #28a745; /* Green for success */
+  }
+  
+  .payment-success-card span i.error-icon {
+    font-size: 4rem;
+    color: #dc3545; /* Red for error */
+  }
+  
+  .payment-success-card h2 {
+    font-size: 2.5rem;
+    font-family: var(--subtitle-font-name, 'Poppins', sans-serif);
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .payment-success-card .message {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 20px;
+  }
+  
+  .booking-details {
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+    margin-top: 20px;
+  }
+  
+  .booking-details h4 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 15px;
+  }
+  
+  .booking-details p {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+  }
+  
+  .booking-details p strong {
+    color: #333;
+  }
+  
+  .redirect-message {
+    font-size: 1.1rem;
+    color: #007bff;
+    font-style: italic;
+  }
+  
+  .error-message {
+    font-size: 1.1rem;
+    color: #dc3545;
+  }
+  
+  .error-message a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .error-message a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Animation for loading spinner */
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }

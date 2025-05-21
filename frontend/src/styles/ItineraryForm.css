@@ -1,0 +1,331 @@
+.itinerary-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  background: #f5f7fa;
+  min-height: 100vh;
+}
+
+.itinerary-form {
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  padding: 2rem;
+}
+
+.itinerary-form h1 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #1a3c34;
+  text-align: left;
+  font-weight: 700;
+}
+
+.form-section {
+  margin-bottom: 2rem;
+}
+
+.form-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #1a3c34;
+  font-weight: 600;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block !important; /* Ensure label is always a block element */
+  margin-bottom: 0.5rem;
+  color: #1a3c34 !important; /* Ensure color is not overridden */
+  font-size: 1rem;
+  font-weight: 500;
+  visibility: visible !important; /* Ensure label is visible */
+  opacity: 1 !important; /* Ensure label is fully opaque */
+}
+
+.required {
+  color: #d32f2f;
+  font-size: 0.875rem;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #fff;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box; /* Ensure padding doesn't affect width */
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.1);
+}
+
+.form-group input:disabled,
+.form-group textarea:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.form-group textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.error-text {
+  display: block !important; /* Ensure error message is a block element */
+  color: #d32f2f !important; /* Ensure color is red */
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  font-weight: 500;
+  visibility: visible !important; /* Ensure error message is visible */
+  opacity: 1 !important; /* Ensure error message is fully opaque */
+  line-height: 1.2; /* Improve readability */
+}
+
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+}
+
+.checkbox-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #333;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.budget-group {
+  position: relative;
+}
+
+.budget-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.currency-select {
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #fff;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.currency-select:focus {
+  outline: none;
+  border-color: #4CAF50;
+}
+
+.budget-conversion {
+  margin-top: 0.5rem;
+  color: #757575;
+  font-size: 0.875rem;
+  font-style: italic;
+}
+
+.review-section {
+  background-color: #f9fafb;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid #4CAF50;
+}
+
+.review-section p {
+  margin: 0.5rem 0;
+  color: #333;
+  font-size: 1rem;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.submit-button,
+.back-button {
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.submit-button:hover {
+  background-color: #45a049;
+}
+
+.back-button {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.back-button:hover {
+  background-color: #d1d5db;
+}
+
+.submit-button:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+}
+
+.alert {
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 500;
+}
+
+.alert.error {
+  background-color: #fef2f2;
+  color: #d32f2f;
+}
+
+.alert.success {
+  background-color: #f0fdf4;
+  color: #15803d;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+      transform: rotate(360deg);
+  }
+}
+
+/* Dialog Styles */
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.dialog {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 450px;
+  margin: 1rem;
+  z-index: 1001;
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.dialog-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333333;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #666666;
+}
+
+.close-button:hover {
+  color: #333333;
+}
+
+.dialog-content {
+  padding: 1.5rem;
+  color: #333333;
+}
+
+.dialog-content p {
+  margin: 0.75rem 0;
+  color: #666666;
+  font-size: 1rem;
+}
+
+.dialog-footer {
+  padding: 1.5rem;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.dialog-button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  min-width: 120px;
+  text-align: center;
+}
+
+.dialog-button.cancel {
+  background: none;
+  border: 1px solid #e0e0e0;
+  color: #666666;
+}
+
+.dialog-button.cancel:hover {
+  background: #f5f5f5;
+}
+
+.dialog-button.confirm {
+  background: #4CAF50;
+  border: none;
+  color: white;
+}
+
+.dialog-button.confirm:hover {
+  background: #45a049;
+}

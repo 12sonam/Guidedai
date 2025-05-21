@@ -23,25 +23,29 @@ import Routers from "../../router/Routers";
 import Footer from "../Footer/Footer";
 
 const Layout = () => {
-    const location = useLocation(); // Get the current route location
+  const location = useLocation(); // Get the current route location
 
-    // Check if the current route is the Login, Register, or AdminDashboard page
-    const isLoginPage = location.pathname === "/login";
-    const isRegisterPage = location.pathname === "/Register";
-    const isAdminDashboard = location.pathname === "/Admin-dashboard";
+  // Check if the current route is the Login, Register, AdminDashboard, or GuideDashboard page
+  const isLoginPage = location.pathname === "/login";
+  const isRegisterPage = location.pathname === "/register";
+  const isAdminDashboard = location.pathname === "/admin-dashboard";
+  const isGuideDashboard = location.pathname === "/Guide-dashboard";
+  const isResetPasswordPage = location.pathname === "/reset-password";
 
-    return (
-        <>
-            {/* Conditionally render Header */}
-            {!isLoginPage && !isRegisterPage && !isAdminDashboard && <Header />}
+  const hideHeaderFooter = isLoginPage || isRegisterPage || isAdminDashboard || isGuideDashboard || isResetPasswordPage;
 
-            {/* Always render Routers */}
-            <Routers />
+  return (
+    <>
+      {/* Conditionally render Header */}
+      {!hideHeaderFooter && <Header />}
 
-            {/* Conditionally render Footer */}
-            {!isLoginPage && !isRegisterPage && !isAdminDashboard && <Footer />}
-        </>
-    );
+      {/* Always render Routers */}
+      <Routers />
+
+      {/* Conditionally render Footer */}
+      {!hideHeaderFooter && <Footer />}
+    </>
+  );
 };
 
 export default Layout;

@@ -1,80 +1,142 @@
 import React, { useState, useContext } from "react";
-import { Container, Row, Col, Form, FormGroup, Button, Label, Input } from "reactstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Container, Row, Col, Form, FormGroup, Button, Input, FormFeedback } from "reactstrap";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import '../styles/login.css';
 
-import loginImg from '../assets/images/login.png';
+import loginImg from '../assets/images/login.jpg';
 import userIcon from '../assets/images/user.png';
 
 import { AuthContext } from "../context/AuthContext";
 import { BASE_URL } from "../utils/config";
 
 const Login = () => {
-
     const [credentials, setCredentials] = useState({
-        email:undefined,
-        password:undefined,
-        role: "Traveler", // Default role
+        email: "",
+        password: ""
     });
 
-    const {dispatch} = useContext(AuthContext)
+    const [showForgotPassword, setShowForgotPassword] = useState(false);
+    const [resetEmail, setResetEmail] = useState('');
+    const [resetMessage, setResetMessage] = useState('');
+    const [resetError, setResetError] = useState('');
+    const [isResetLoading, setIsResetLoading] = useState(false);
+
+    const [errors, setErrors] = useState({});
+    const { dispatch } = useContext(AuthContext);
     const navigate = useNavigate();
+    const location = useLocation();
+    const successMessage = location.state?.successMessage;
+
+    const validate = () => {
+        let errs = {};
+        if (!credentials.email) errs.email = "Email is required.";
+        if (!credentials.password) errs.password = "Password is required.";
+        return errs;
+    };
+
+    const validateResetEmail = () => {
+        if (!resetEmail) return "Email is required.";
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(resetEmail)) return "Please enter a valid email.";
+        return "";
+    };
 
     const handleChange = (e) => {
         setCredentials(prev => ({ ...prev, [e.target.id]: e.target.value }));
-    };
-
-    const handleRoleChange = (e) => {
-        setCredentials(prev => ({ ...prev, role: e.target.value }));
+        setErrors(prev => ({ ...prev, [e.target.id]: "" }));
     };
 
     const handleClick = async (e) => {
         e.preventDefault();
+        const validationErrors = validate();
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            return;
+        }
 
-        dispatch({type:'LOGIN_START'})
+        dispatch({ type: 'LOGIN_START' });
 
         try {
-            const res = await fetch(`${BASE_URL}/auth/login`,{
-                method: "post",
-                headers: {
-                    'content-type': 'application/json',
-                },
-                credentials:'include',
+            const res = await fetch(`${BASE_URL}/auth/login`, {
+                method: "POST",
+                headers: { 'content-type': 'application/json' },
+                credentials: 'include',
                 body: JSON.stringify(credentials),
             });
 
             const result = await res.json();
-            if(!res.ok) alert (result.message);
 
-            console.log(result.data);
+            if (!res.ok) {
+                let newErrors = {};
+                if (result.message === "Incorrect password") {
+                    newErrors.password = "Password incorrect";
+                } else if (result.message === "User not found") {
+                    newErrors.email = "Email not found";
+                } else {
+                    newErrors.general = result.message;
+                }
 
-            dispatch({type:'LOGIN_SUCCESS', payload:result.data})
+                setErrors(newErrors);
+                dispatch({ type: 'LOGIN_FAILURE', payload: result.message });
+                return;
+            }
 
-            // Redirect based on role
-        if (result.role === "Admin") {
-            navigate("/Admin-dashboard");
-        } else if (result.role === "Guide") {
-            navigate("/Guide-dashboard");
-        } else {
-            navigate("/home");
-        }
+            dispatch({ type: 'LOGIN_SUCCESS', payload: result.data });
+            localStorage.setItem('token', result.token);
+            localStorage.setItem('userId', result.data._id); 
+            localStorage.setItem('userRole', result.role);   
+            localStorage.setItem('user', JSON.stringify(result.data));
+
+            console.log("Login result:", result);
+
+            // Role-based redirection
+            const userRole = result.data.role;
+            if (userRole === "Admin") navigate("/admin-dashboard");
+            else if (userRole === "Guide") navigate("/Guide-dashboard");
+            else if (userRole === "Traveler") navigate("/home");
+            else navigate("/"); // fallback
 
         } catch (err) {
-            dispatch({type:'LOGIN_FAILURE', payload:err.message})
+            dispatch({ type: 'LOGIN_FAILURE', payload: err.message });
+            setErrors({ general: err.message });
         }
-        
-        // // Simulating authentication (replace with actual backend authentication)
-        // if (credentials.email && credentials.password) {
-        //     if (credentials.role === "Admin") {
-        //         navigate("/Admin-dashboard");
-        //     } else if (credentials.role === "Guide") {
-        //         navigate("/Guide-dashboard");
-        //     } else {
-        //         navigate("/home");
-        //     }
-        // } else {
-        //     alert("Please enter valid credentials!");
-        // }
+    };
+
+    const handleForgotPassword = async (e) => {
+        e.preventDefault();
+        setResetMessage('');
+        setResetError('');
+
+        const emailError = validateResetEmail();
+        if (emailError) {
+            setResetError(emailError);
+            return;
+        }
+
+        setIsResetLoading(true);
+
+        try {
+            const res = await fetch(`${BASE_URL}/auth/forgot-password`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: resetEmail }),
+            });
+
+            const result = await res.json();
+
+            if (!res.ok) {
+                setResetError(result.message || 'Something went wrong');
+            } else {
+                setResetMessage('An OTP has been sent to your email. Please check your inbox (and spam/junk folder).');
+                setTimeout(() => {
+                    navigate("/reset-password", { state: { email: resetEmail } });
+                }, 2000);
+            }
+        } catch (err) {
+            setResetError('Error sending OTP. Please try again later.');
+        } finally {
+            setIsResetLoading(false);
+        }
     };
 
     return (
@@ -91,26 +153,73 @@ const Login = () => {
                                     <img src={userIcon} alt="User" />
                                 </div>
                                 <h2>Login</h2>
+                                {successMessage && <p style={{ color: "green", textAlign: "center" }}>{successMessage}</p>}
 
                                 <Form onSubmit={handleClick}>
                                     <FormGroup>
-                                        <input type="email" placeholder="Email" id="email" required onChange={handleChange} />
+                                        <Input
+                                            type="email"
+                                            id="email"
+                                            placeholder="Email"
+                                            value={credentials.email}
+                                            onChange={handleChange}
+                                            invalid={!!errors.email}
+                                        />
+                                        {errors.email && <FormFeedback>{errors.email}</FormFeedback>}
                                     </FormGroup>
                                     <FormGroup>
-                                        <input type="password" placeholder="Password" id="password" required onChange={handleChange} />
+                                        <Input
+                                            type="password"
+                                            id="password"
+                                            placeholder="Password"
+                                            value={credentials.password}
+                                            onChange={handleChange}
+                                            invalid={!!errors.password}
+                                        />
+                                        {errors.password && <FormFeedback>{errors.password}</FormFeedback>}
                                     </FormGroup>
-                                    <FormGroup>
-                                        <Label for="role">Select Role</Label>
-                                        <Input type="select" id="role" value={credentials.role} onChange={handleRoleChange}>
-                                            <option value="Traveler">Traveler</option>
-                                            <option value="Guide">Guide</option>
-                                            <option value="Admin">Admin</option>
-                                        </Input>
-                                    </FormGroup>
+
+                                    <p
+                                        className="text-sm text-primary cursor-pointer mb-3"
+                                        style={{ textAlign: "left" }}
+                                        onClick={() => setShowForgotPassword(!showForgotPassword)}
+                                    >
+                                        Forgot Password?
+                                    </p>
+
+                                    {errors.general && <p style={{ color: 'red', textAlign: "center" }}>{errors.general}</p>}
                                     <Button className="btn secondary__btn auth__btn" type="submit">
                                         Login
                                     </Button>
                                 </Form>
+
+                                {showForgotPassword && (
+                                    <Form onSubmit={handleForgotPassword} className="mt-3">
+                                        <div className="mb-3 p-3 rounded" style={{ backgroundColor: "#f9f9f9" }}>
+                                            <h6 className="mb-2">Reset Password</h6>
+                                            <FormGroup>
+                                                <Input
+                                                    type="email"
+                                                    placeholder="Enter your email"
+                                                    value={resetEmail}
+                                                    onChange={(e) => setResetEmail(e.target.value)}
+                                                    invalid={!!resetError && !resetMessage}
+                                                />
+                                                {resetError && !resetMessage && <FormFeedback>{resetError}</FormFeedback>}
+                                            </FormGroup>
+                                            {resetMessage && <p className="text-success" style={{ fontSize: "0.9rem" }}>{resetMessage}</p>}
+                                            <Button
+                                                type="submit"
+                                                color="primary"
+                                                size="sm"
+                                                disabled={isResetLoading}
+                                            >
+                                                {isResetLoading ? "Sending..." : "Send OTP"}
+                                            </Button>
+                                        </div>
+                                    </Form>
+                                )}
+
                                 <p>Don't have an account? <Link to='/register'>Create</Link></p>
                             </div>
                         </div>
