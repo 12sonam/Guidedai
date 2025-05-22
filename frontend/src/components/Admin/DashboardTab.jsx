@@ -13,19 +13,22 @@ const DashboardTab = ({ stats, chartData, recentBookings, setActiveTab }) => {
     {
       header: 'Status',
       accessor: 'status',
-      render: (value) => (
-        <span
-          className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-            value === 'completed'
-              ? 'bg-green-100 text-green-800'
-              : value === 'pending'
-              ? 'bg-yellow-100 text-yellow-800'
-              : 'bg-red-100 text-red-800'
-          }`}
-        >
-          {value.charAt(0).toUpperCase() + value.slice(1)}
-        </span>
-      ),
+      render: (value) => {
+        const status = value || 'unknown'; // Fallback for undefined status
+        return (
+          <span
+            className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+              status === 'confirmed'
+                ? 'bg-green-100 text-green-800'
+                : status === 'pending'
+                ? 'bg-yellow-100 text-yellow-800'
+                : 'bg-red-100 text-red-800'
+            }`}
+          >
+            {status.charAt(0).toUpperCase() + status.slice(1)}
+          </span>
+        );
+      },
     },
     { header: 'Amount', accessor: 'price', render: (value) => `${value.toLocaleString()}` },
   ];
@@ -54,9 +57,9 @@ const DashboardTab = ({ stats, chartData, recentBookings, setActiveTab }) => {
         />
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-        <RevenueByTourChart data={chartData.revenueByTour} />
-        <BookingStatusChart data={chartData.bookingStatus} />
-        <UserDistributionChart data={chartData.userTypeData} />
+        {chartData?.revenueByTour && <RevenueByTourChart data={chartData.revenueByTour} />}
+        {chartData?.bookingStatus && <BookingStatusChart data={chartData.bookingStatus} />}
+        {chartData?.userTypeData && <UserDistributionChart data={chartData.userTypeData} />}
       </div>
       <div className="bg-white rounded-lg p-6 shadow">
         <div className="flex justify-between items-center mb-4">
@@ -68,7 +71,7 @@ const DashboardTab = ({ stats, chartData, recentBookings, setActiveTab }) => {
             View All
           </button>
         </div>
-        <ReusableTable columns={recentBookingColumns} data={recentBookings} />
+        <ReusableTable columns={recentBookingColumns} data={recentBookings || []} />
       </div>
     </div>
   );
