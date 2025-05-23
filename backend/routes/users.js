@@ -18,26 +18,3 @@ router.get("/:id", verifyUser, getSingleUser);
 router.get("/", verifyAdmin, getAllUser);
 
 export default router 
-
-
-
-// import express from 'express';
-// const router = express.Router();
-// import {
-//     deleteUser,
-//     getAllUser,
-//     getSingleUser,
-//     updateUser
-// } from '../controllers/userController.js';
-// import { verifyAdmin, verifyUser } from '../utils/verifyToken.js';
-
-// // User routes
-// router.route('/')
-//     .get(verifyAdmin, getAllUser);
-
-// router.route('/:id')
-//     .get(verifyUser, getSingleUser)
-//     .put(verifyUser, updateUser)
-//     .delete(verifyUser, deleteUser);
-
-// export default router;

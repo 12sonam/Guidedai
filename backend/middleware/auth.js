@@ -1,57 +1,38 @@
-// import jwt from 'jsonwebtoken';
-// import ErrorResponse from '../utils/errorResponse.js';
-// import User from '../models/User.js';
+// const jwt = require('jsonwebtoken');
 
-// // Protect routes
-// export const protect = async (req, res, next) => {
-//   let token;
-  
-//   if (req.headers.authorization?.startsWith('Bearer')) {
-//     token = req.headers.authorization.split(' ')[1];
-//   }
-  
-//   if (!token) {
-//     return next(new ErrorResponse('Not authorized', 401));
-//   }
+// const authenticateTraveler = (req, res, next) => {
+//   const token = req.headers.authorization?.split(" ")[1];
 
-//   try {
-//     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-//     req.user = await User.findById(decoded.id);
-//     next();
-//   } catch (err) {
-//     return next(new ErrorResponse('Not authorized', 401));
-//   }
-// };
+//   if (!token) return res.status(401).json({ message: "No token provided" });
 
-// // Grant access to specific roles
-// // In auth.js
-// export const authorize = (...roles) => {
-//   return (req, res, next) => {
-//     if (!req.user || !roles.includes(req.user.role)) {
-//       console.log('Unauthorized access attempt:', req.user);
-//       return next(new ErrorResponse(`Role ${req.user?.role} is not authorized`, 403));
+//   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+//     if (err) return res.status(403).json({ message: "Invalid token" });
+
+//     if (decoded.role !== 'traveler') {
+//       return res.status(403).json({ message: "Access denied" });
 //     }
+
+//     req.user = decoded; // contains _id and role
 //     next();
-//   };
+//   });
 // };
 
-const jwt = require('jsonwebtoken');
+// module.exports = authenticateTraveler;
 
-const authenticateTraveler = (req, res, next) => {
+import jwt from 'jsonwebtoken';
+
+// General authentication middleware for all roles
+const authenticateUser = (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1];
 
   if (!token) return res.status(401).json({ message: "No token provided" });
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+  jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decoded) => {
     if (err) return res.status(403).json({ message: "Invalid token" });
 
-    if (decoded.role !== 'traveler') {
-      return res.status(403).json({ message: "Access denied" });
-    }
-
-    req.user = decoded; // contains _id and role
+    req.user = decoded; // Contains _id and role
     next();
   });
 };
 
-module.exports = authenticateTraveler;
+export { authenticateTraveler, authorizeNotificationAccess };
