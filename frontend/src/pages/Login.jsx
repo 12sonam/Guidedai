@@ -262,52 +262,101 @@ const Login = () => {
   const successMessage = location.state?.successMessage;
 
   // Check stored token on mount and redirect if valid
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   const storedRole = localStorage.getItem("userRole");
+
+  //   if (token && storedRole) {
+  //     // Validate token by making a quick API call (optional but recommended for security)
+  //     const validateToken = async () => {
+  //       try {
+  //         const res = await fetch(`${BASE_URL}/auth/validate-token`, {
+  //           method: "GET",
+  //           headers: {
+  //             Authorization: `Bearer ${token}`,
+  //             "Content-Type": "application/json",
+  //           },
+  //           credentials: "include",
+  //         });
+
+  //         if (!res.ok) {
+  //           throw new Error("Invalid token");
+  //         }
+
+  //         // Redirect based on role
+  //         if (storedRole === "Admin") {
+  //           navigate("/admin-dashboard");
+  //         } else if (storedRole === "Guide") {
+  //           navigate("/Guide-dashboard");
+  //         } else if (storedRole === "Traveler") {
+  //           navigate("/home");
+  //         } else {
+  //           navigate("/"); // Fallback for unknown roles
+  //         }
+  //       } catch (err) {
+  //         console.error("Token validation failed:", err);
+  //         // Clear invalid session
+  //         dispatch({ type: 'LOGOUT' });
+  //         localStorage.removeItem('token');
+  //         localStorage.removeItem('userId');
+  //         localStorage.removeItem('userRole');
+  //         localStorage.removeItem('user');
+  //         navigate("/login");
+  //       }
+  //     };
+
+  //     validateToken();
+  //   }
+  // }, [navigate, dispatch]);
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     const storedRole = localStorage.getItem("userRole");
 
-    if (token && storedRole) {
-      // Validate token by making a quick API call (optional but recommended for security)
-      const validateToken = async () => {
-        try {
-          const res = await fetch(`${BASE_URL}/auth/validate-token`, {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-          });
-
-          if (!res.ok) {
-            throw new Error("Invalid token");
-          }
-
-          // Redirect based on role
-          if (storedRole === "Admin") {
-            navigate("/admin-dashboard");
-          } else if (storedRole === "Guide") {
-            navigate("/Guide-dashboard");
-          } else if (storedRole === "Traveler") {
-            navigate("/home");
-          } else {
-            navigate("/"); // Fallback for unknown roles
-          }
-        } catch (err) {
-          console.error("Token validation failed:", err);
-          // Clear invalid session
-          dispatch({ type: 'LOGOUT' });
-          localStorage.removeItem('token');
-          localStorage.removeItem('userId');
-          localStorage.removeItem('userRole');
-          localStorage.removeItem('user');
-          navigate("/login");
-        }
-      };
-
-      validateToken();
+    // Skip validation if no token, no role, or already on /login
+    if (!token || !storedRole || location.pathname === "/login") {
+        return;
     }
-  }, [navigate, dispatch]);
+
+    const validateToken = async () => {
+        try {
+            const res = await fetch(`${BASE_URL}/auth/verify-token`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+            });
+
+            if (!res.ok) {
+                throw new Error("Invalid token");
+            }
+
+            // Redirect based on role
+            if (storedRole === "Admin") {
+                navigate("/admin-dashboard");
+            } else if (storedRole === "Guide") {
+                navigate("/Guide-dashboard");
+            } else if (storedRole === "Traveler") {
+                navigate("/home");
+            } else {
+                navigate("/"); // Fallback for unknown roles
+            }
+        } catch (err) {
+            console.error("Token validation failed:", err.message);
+            // Clear invalid session
+            dispatch({ type: 'LOGOUT' });
+            localStorage.removeItem('token');
+            localStorage.removeItem('userId');
+            localStorage.removeItem('userRole');
+            localStorage.removeItem('user');
+            // No navigation needed, stay on /login
+        }
+    };
+
+    validateToken();
+}, [navigate, dispatch, location.pathname]);
 
   const validate = () => {
     let errs = {};

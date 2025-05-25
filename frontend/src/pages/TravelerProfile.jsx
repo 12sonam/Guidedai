@@ -317,7 +317,7 @@ const TravelerProfile = () => {
   };
 
   return (
-    <div className="container">
+    <div className="container" style={{ paddingTop: "100px" }}>
       <div className="profile-paper">
         <div className="profile-container">
           <div className="profile-sidebar">

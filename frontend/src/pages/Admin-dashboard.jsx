@@ -441,9 +441,18 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleDeclineItinerary = async (itineraryId) => {
+  // const handleDeclineItinerary = async (itineraryId) => {
+  //   try {
+  //     await api.put(`/admin/itineraries/${itineraryId}/status`, { status: 'declined' });
+  //     fetchItineraries();
+  //   } catch (err) {
+  //     setError(err.response?.data?.message || 'Failed to decline itinerary');
+  //   }
+  // };
+
+    const handleDeclineItinerary = async (itineraryId, feedback) => {
     try {
-      await api.put(`/admin/itineraries/${itineraryId}/status`, { status: 'declined' });
+      await api.put(`/admin/itineraries/${itineraryId}/status`, { status: 'declined', feedback });
       fetchItineraries();
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to decline itinerary');

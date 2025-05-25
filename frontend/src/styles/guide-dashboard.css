@@ -736,6 +736,38 @@ body {
   font-weight: 600;
 }
 
+.delete-button {
+  background-color: var(--danger-color);
+  color: white;
+  border: none;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: var(--transition);
+  margin-left: 1rem;
+}
+
+.delete-button:hover {
+  background-color: #cc0000;
+}
+
+.availability-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  background-color: white;
+  transition: var(--transition);
+}
+
+.availability-item .delete-button {
+  margin-left: auto; /* Pushes delete button to the right */
+}
+
 .period {
   color: #444;
 }

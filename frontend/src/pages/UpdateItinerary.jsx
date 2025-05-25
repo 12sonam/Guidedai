@@ -627,50 +627,97 @@ const UpdateItinerary = () => {
     setShowUpdateDialog(true);
   };
 
+  // const confirmUpdate = async () => {
+  //   setUpdateLoading(true);
+  //   setError(null);
+  //   setUpdateSuccess(false);
+
+  //   try {
+  //     const token = localStorage.getItem("token");
+  //     if (!token) {
+  //       navigate("/login");
+  //       return;
+  //     }
+
+  //     const res = await fetch(`${BASE_URL}/itineraries/${id}`, {
+  //       method: "PUT",
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(formData),
+  //       credentials: "include",
+  //     });
+
+  //     const result = await res.json();
+  //     if (res.ok) {
+  //       setUpdateSuccess(true);
+  //       setSuccess(true);
+  //       setTimeout(() => {
+  //         setShowUpdateDialog(false);
+  //         navigate(`/TravelerProfile/${userId}`, { state: { activeTab: 2 } });
+  //       }, 1500);
+  //     } else {
+  //       if (res.status === 401) {
+  //         localStorage.removeItem("token");
+  //         navigate("/login", { state: { message: "Session expired. Please log in again." } });
+  //       } else {
+  //         setError(result.message || "Failed to update itinerary");
+  //       }
+  //     }
+  //   } catch (err) {
+  //     setError(err.message || "Error updating itinerary");
+  //   } finally {
+  //     setUpdateLoading(false);
+  //   }
+  // };
+
   const confirmUpdate = async () => {
-    setUpdateLoading(true);
-    setError(null);
-    setUpdateSuccess(false);
+  setUpdateLoading(true);
+  setError(null);
+  setUpdateSuccess(false);
 
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        navigate("/login");
-        return;
-      }
-
-      const res = await fetch(`${BASE_URL}/itineraries/${id}`, {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-        credentials: "include",
-      });
-
-      const result = await res.json();
-      if (res.ok) {
-        setUpdateSuccess(true);
-        setSuccess(true);
-        setTimeout(() => {
-          setShowUpdateDialog(false);
-          navigate(`/TravelerProfile/${userId}`, { state: { activeTab: 2 } });
-        }, 1500);
-      } else {
-        if (res.status === 401) {
-          localStorage.removeItem("token");
-          navigate("/login", { state: { message: "Session expired. Please log in again." } });
-        } else {
-          setError(result.message || "Failed to update itinerary");
-        }
-      }
-    } catch (err) {
-      setError(err.message || "Error updating itinerary");
-    } finally {
-      setUpdateLoading(false);
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+      return;
     }
-  };
+
+    const res = await fetch(`${BASE_URL}/itineraries/${id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...formData,
+        departureDate: formData.departureDate,
+        returnDate: formData.returnDate,
+        budget: parseFloat(formData.budget),
+      }),
+      credentials: "include",
+    });
+
+    const result = await res.json();
+    if (res.ok) {
+      setUpdateSuccess(true);
+      setSuccess(true);
+      setTimeout(() => {
+        setShowUpdateDialog(false);
+        navigate(`/TravelerProfile/${userId}`, { state: { activeTab: 2 } });
+      }, 1500);
+    } else {
+      setError(result.message || `Failed to update itinerary (Status: ${res.status})`);
+      console.error("Update error response:", result); // Debug the error
+    }
+  } catch (err) {
+    setError(err.message || "Error updating itinerary");
+    console.error("Update error:", err);
+  } finally {
+    setUpdateLoading(false);
+  }
+};
 
   const handleCloseUpdateDialog = () => {
     setShowUpdateDialog(false);
@@ -930,55 +977,64 @@ const UpdateItinerary = () => {
       </form>
 
       {showUpdateDialog && (
-        <div className="dialog-overlay">
-          <div className="dialog">
-            <div className="dialog-header">
-              <h3>Update Itinerary</h3>
-              <button className="close-button" onClick={handleCloseUpdateDialog}>❌</button>
-            </div>
-            <div className="dialog-content">
-              {updateSuccess ? (
-                <div className="alert success">
-                  ✅ Itinerary updated successfully!
-                </div>
-              ) : (
-                <>
-                  <div className="alert warning">
-                    ⚠️ <strong>Warning:</strong> Are you sure you want to update this itinerary?
-                  </div>
-                  <p><strong>Tour:</strong> {formData.tourName}</p>
-                  <p><strong>Departure Date:</strong> {formatDate(formData.departureDate)}</p>
-                  <p>Changes will be saved and cannot be undone.</p>
-                </>
-              )}
-            </div>
-            <div className="dialog-footer">
-              {!updateSuccess && (
-                <>
-                  <button
-                    className="dialog-button cancel"
-                    onClick={handleCloseUpdateDialog}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    className="dialog-button confirm"
-                    onClick={confirmUpdate}
-                    disabled={updateLoading}
-                  >
-                    {updateLoading ? <span className="spinner">🔄</span> : "Confirm Update"}
-                  </button>
-                </>
-              )}
-              {updateSuccess && (
-                <button className="dialog-button confirm" onClick={handleCloseUpdateDialog}>
-                  Close
-                </button>
-              )}
-            </div>
+  <div className="dialog-overlay">
+    <div className="dialog">
+      <div className="dialog-header">
+        <h3>Update Itinerary</h3>
+        <button className="close-button" onClick={handleCloseUpdateDialog}>❌</button>
+      </div>
+      <div className="dialog-content">
+        {updateSuccess ? (
+          <div className="alert success">
+            ✅ Itinerary updated successfully!
           </div>
-        </div>
-      )}
+        ) : (
+          <>
+            {error && (
+              <div className="alert error">
+                ❌ {error}
+              </div>
+            )}
+            {!error && (
+              <>
+                <div className="alert warning">
+                  ⚠️ <strong>Warning:</strong> Are you sure you want to update this itinerary?
+                </div>
+                <p><strong>Tour:</strong> {formData.tourName}</p>
+                <p><strong>Departure Date:</strong> {formatDate(formData.departureDate)}</p>
+                <p>Changes will be saved and cannot be undone.</p>
+              </>
+            )}
+          </>
+        )}
+      </div>
+      <div className="dialog-footer">
+        {!updateSuccess && (
+          <>
+            <button
+              className="dialog-button cancel"
+              onClick={handleCloseUpdateDialog}
+            >
+              Cancel
+            </button>
+            <button
+              className="dialog-button confirm"
+              onClick={confirmUpdate}
+              disabled={updateLoading}
+            >
+              {updateLoading ? <span className="spinner">🔄</span> : "Confirm Update"}
+            </button>
+          </>
+        )}
+        {updateSuccess && (
+          <button className="dialog-button confirm" onClick={handleCloseUpdateDialog}>
+            Close
+          </button>
+        )}
+      </div>
+    </div>
+  </div>
+)}
 
       {showDeleteDialog && (
         <div className="dialog-overlay">

@@ -15,12 +15,12 @@ const serviceData = [
     {
         imgUrl: guideImg,
         title: "Best Tour Guide",
-        desc: "Lorem ipsum dolor siti amej,akjfjk, constwmnn, elite."
+        desc: "Explore with expert guides offering local knowledge, passion, and personalized insights for a memorable adventure tailored to your interests."
     },
     {
         imgUrl: customizationImg,
         title: "Customization",
-        desc: "Lorem ipsum dolor siti amej,akjfjk, constwmnn, elite."
+        desc: "Tailor your trip with flexible options, adjusting itineraries and adding unique experiences to match your preferences and schedule."
     }
 ]
 

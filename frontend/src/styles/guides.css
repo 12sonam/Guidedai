@@ -952,6 +952,10 @@ body {
   background-color: #f5f5f5;
 }
 
+.header-offset {
+  padding-top: 80px;
+}
+
 /* Review stars in modal */
 .guide-modal-rating {
   display: flex;
