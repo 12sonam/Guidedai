@@ -11,7 +11,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 // Verify if email credentials are available
-if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSW) {
+if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
   console.error('WARNING: Email credentials are missing in environment variables');
   console.error('Make sure EMAIL_USER and EMAIL_APP_PASSWORD are set in your .env file');
 }
@@ -442,65 +442,6 @@ export const resetPassword = async (req, res) => {
 };
 
 //user login
-// export const login = async (req, res) => {
-//     const { email, password, role } = req.body;
-
-//     try {
-//         const user = await User.findOne({ email });
-
-//         // If the user doesn't exist
-//         if (!user) {
-//             return res.status(404).json({ success: false, message: 'User not found' });
-//         }
-
-//         // If the role doesn't match
-//         if (user.role !== role) {
-//             return res.status(403).json({ success: false, message: `Access denied for role: ${role}` });
-//         }
-
-//         // Compare password
-//         const checkPasswordCorrect = await bcrypt.compare(password, user.password);
-//         if (!checkPasswordCorrect) {
-//             return res.status(401).json({ success: false, message: 'Incorrect email or password' });
-//         }
-
-//         // For guides, fetch their profile
-//         let guideProfile = null;
-//         if (user.role === "Guide") {
-//             guideProfile = await GuideProfile.findOne({ userId: user._id });
-//         }
-
-//         // Destructure user data
-//         const { password: userPassword, ...userData } = user._doc;
-
-//         // Create JWT token
-//         const token = jwt.sign(
-//             { id: user._id, role: user.role },
-//             process.env.JWT_SECRET_KEY,
-//             { expiresIn: '15d' }
-//         );
-
-//         // Set cookie and send response
-//         res.cookie('accessToken', token, {
-//             httpOnly: true,
-//             expires: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000) // 15 days
-//         }).status(200).json({
-//             token,
-//             success: true,
-//             message: 'Successfully Login',
-//             data: { 
-//                 ...userData,
-//                 guideProfile // Include guide profile if exists
-//             },
-//             role: user.role
-//         });
-
-//     } catch (err) {
-//         console.error(err);
-//         res.status(500).json({ success: false, message: 'Failed to login' });
-//     }
-// };
-
 export const login = async (req, res) => {
     const { email, password } = req.body;
 

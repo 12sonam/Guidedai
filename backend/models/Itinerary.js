@@ -79,6 +79,10 @@ const itinerarySchema = new mongoose.Schema(
       enum: ["pending", "accepted", "declined"],
       default: "pending",
     },
+    feedback: {
+    type: String, 
+    default: null,
+  },
   },
   { timestamps: true }
 );

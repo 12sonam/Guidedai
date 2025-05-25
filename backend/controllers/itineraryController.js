@@ -203,6 +203,103 @@ export const getItineraryById = async (req, res) => {
 };
 
 // Update an itinerary
+// export const updateItinerary = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const {
+//       tourName,
+//       descriptionItinerary,
+//       departureDate,
+//       returnDate,
+//       numberOfTravelers,
+//       budget,
+//       currency,
+//     } = req.body;
+
+//     if (!req.user || !req.user.id) {
+//       return res.status(401).json({
+//         success: false,
+//         message: "User not authenticated",
+//       });
+//     }
+
+//     const itinerary = await Itinerary.findById(id);
+//     if (!itinerary) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "Itinerary not found",
+//       });
+//     }
+
+//     if (itinerary.userId.toString() !== req.user.id) {
+//       return res.status(403).json({
+//         success: false,
+//         message: "You are not authorized to update this itinerary",
+//       });
+//     }
+
+//     if (itinerary.status !== "pending") {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Cannot update an itinerary that is not pending",
+//       });
+//     }
+
+//     // Validate dates
+//     const departure = new Date(departureDate);
+//     const returnD = new Date(returnDate);
+//     const today = new Date();
+//     today.setHours(0, 0, 0, 0);
+
+//     if (departure < today) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Departure date cannot be in the past",
+//       });
+//     }
+
+//     if (returnD <= departure) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Return date must be after departure date",
+//       });
+//     }
+
+//     // Validate budget
+//     if (isNaN(budget) || budget <= 0) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Budget must be a positive number",
+//       });
+//     }
+
+//     // Update fields
+//     itinerary.tourName = tourName || itinerary.tourName;
+//     itinerary.descriptionItinerary = descriptionItinerary || itinerary.descriptionItinerary;
+//     itinerary.departureDate = departureDate || itinerary.departureDate;
+//     itinerary.returnDate = returnDate || itinerary.returnDate;
+//     itinerary.numberOfTravelers = numberOfTravelers || itinerary.numberOfTravelers;
+//     itinerary.budget = budget || itinerary.budget;
+//     itinerary.currency = currency || itinerary.currency;
+//     itinerary.originalBudget = budget || itinerary.originalBudget;
+//     itinerary.originalCurrency = currency || itinerary.originalCurrency;
+
+//     await itinerary.save();
+
+//     res.status(200).json({
+//       success: true,
+//       message: "Itinerary updated successfully",
+//       data: itinerary,
+//     });
+//   } catch (error) {
+//     console.error("Error updating itinerary:", error);
+//     res.status(500).json({
+//       success: false,
+//       message: "Failed to update itinerary. Please try again.",
+//       error: error.message,
+//     });
+//   }
+// };
 export const updateItinerary = async (req, res) => {
   try {
     const { id } = req.params;
@@ -223,7 +320,23 @@ export const updateItinerary = async (req, res) => {
       });
     }
 
-    const itinerary = await Itinerary.findById(id);
+    // Find and update the itinerary in one step
+    const itinerary = await Itinerary.findByIdAndUpdate(
+      id,
+      {
+        tourName,
+        descriptionItinerary,
+        departureDate,
+        returnDate,
+        numberOfTravelers,
+        budget,
+        currency,
+        originalBudget: budget,
+        originalCurrency: currency,
+      },
+      { new: true, runValidators: false } // Return the updated document and skip full validation
+    );
+
     if (!itinerary) {
       return res.status(404).json({
         success: false,
@@ -272,19 +385,6 @@ export const updateItinerary = async (req, res) => {
         message: "Budget must be a positive number",
       });
     }
-
-    // Update fields
-    itinerary.tourName = tourName || itinerary.tourName;
-    itinerary.descriptionItinerary = descriptionItinerary || itinerary.descriptionItinerary;
-    itinerary.departureDate = departureDate || itinerary.departureDate;
-    itinerary.returnDate = returnDate || itinerary.returnDate;
-    itinerary.numberOfTravelers = numberOfTravelers || itinerary.numberOfTravelers;
-    itinerary.budget = budget || itinerary.budget;
-    itinerary.currency = currency || itinerary.currency;
-    itinerary.originalBudget = budget || itinerary.originalBudget;
-    itinerary.originalCurrency = currency || itinerary.originalCurrency;
-
-    await itinerary.save();
 
     res.status(200).json({
       success: true,
